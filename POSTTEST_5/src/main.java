@@ -1,0 +1,195 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class main {
+
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+        ArrayList<Hijab> daftarHijab = new ArrayList<>();
+
+        int menu = 0;
+
+        while(menu != 6) {
+
+            System.out.println("=== SISTEM 1DATA BY HIJABDAILY ===");
+            System.out.println("1. Tambah Data");
+            System.out.println("2. Lihat Data");
+            System.out.println("3. Lihat Kategori Hijab");
+            System.out.println("4. Hapus Data");
+            System.out.println("5. Update Data");
+            System.out.println("6. Exit");
+
+            System.out.print("Pilih menu: ");
+            menu = input.nextInt();
+            input.nextLine();
+
+            switch(menu){
+
+                case 1:
+                    tambahHijab(input, daftarHijab);
+                    break;
+
+                case 2:
+                    lihatHijab(daftarHijab);
+                    break;
+
+                case 3:
+                    KategoriHijab k = new KategoriHijab();
+                    k.tampilkanKategori();
+                    break;
+
+                case 4:
+                    hapusHijab(input, daftarHijab);
+                    break;
+
+                case 5:
+                    updateHijab(input, daftarHijab);
+                    break;
+
+                case 6:
+                    System.out.println("Program selesai");
+                    break;
+
+                default:
+                    System.out.println("Menu tidak tersedia");
+            }
+        }
+    }
+
+    static void tambahHijab(Scanner input, ArrayList<Hijab> daftarHijab){
+
+        KategoriHijab k = new KategoriHijab();
+
+        System.out.print("Nama Hijab : ");
+        String nama = input.nextLine();
+
+        System.out.print("Warna : ");
+        String warna = input.nextLine();
+
+        k.tampilkanKategori();
+
+        System.out.print("Pilih Kategori : ");
+        int pilih = input.nextInt();
+        input.nextLine();
+
+        System.out.print("Stok : ");
+        int stok = input.nextInt();
+
+        System.out.print("Harga : ");
+        int harga = input.nextInt();
+        input.nextLine();
+
+        System.out.println("Diskon (%) : ");
+        int diskon = input.nextInt();
+        input.nextLine();
+
+        Hijab h;
+        if(pilih == 1){
+            h = new Pashmina(nama, warna, stok, harga, diskon);
+            h.setDiskon(diskon);
+        } else if(pilih == 2){
+            h = new SegiEmpat(nama, warna, stok, harga, diskon);
+            h.setDiskon(diskon);
+        } else if(pilih == 3){
+            h = new Instan(nama, warna, stok, harga, diskon);
+            h.setDiskon(diskon);
+        } else if(pilih == 4){
+            h = new Bergo(nama, warna, stok, harga, diskon);
+            h.setDiskon(diskon);
+        } else if(pilih == 5) {
+            h = new Khimar(nama, warna, stok, harga, diskon);
+            h.setDiskon(diskon);
+        } else {
+            String kategori = k.getKategori()[pilih - 1];
+            h = new Pashmina(nama, warna, stok, harga, diskon);
+        }
+
+        daftarHijab.add(h);
+        System.out.println("Data hijab berhasil ditambahkan");
+    }
+
+    static void lihatHijab(ArrayList<Hijab> daftarHijab){
+        if(daftarHijab.size() == 0) {
+            System.out.println("Data hijab masih kosong");
+        }else {
+            System.out.println("=== DAFTAR PRODUK BY HIJABDAILY ===");
+            for(int i = 0; i < daftarHijab.size(); i++) {
+                System.out.println("Produk ke-" + (i + 1));
+                daftarHijab.get(i).tampilkanData();
+                System.out.println("-----------------------");
+            }
+        }
+    }
+
+    static void hapusHijab(Scanner input, ArrayList<Hijab> daftarHijab){
+        System.out.print("Masukkan nomor hijab yang ingin dihapus: ");
+        int index = input.nextInt() - 1;
+
+        if(index >= 0 && index < daftarHijab.size()){
+            daftarHijab.remove(index);
+            System.out.println("Data hijab berhasil dihapus");
+        }else {
+            System.out.println("Data hijab tidak ditemukan");
+        }
+    }
+
+    static void updateHijab(Scanner input, ArrayList<Hijab> daftarHijab){
+        System.out.print("Masukkan nomor hijab yang ingin diupdate: ");
+        int index = input.nextInt() - 1;
+        input.nextLine();
+
+        if(index >= 0 && index < daftarHijab.size()){
+
+            Hijab h = daftarHijab.get(index);
+            KategoriHijab k = new KategoriHijab();
+
+            System.out.print("Nama baru : ");
+            h.setNama(input.nextLine());
+
+            System.out.print("Warna baru : ");
+            h.setWarna(input.nextLine());
+
+            k.tampilkanKategori();
+            System.out.print("Pilih kategori baru : ");
+            int pilih = input.nextInt();
+            input.nextLine();
+
+            String kategoriBaru = k.getKategori()[pilih - 1];
+            h.setKategori(kategoriBaru);
+
+            System.out.print("Stok baru : ");
+            h.setStok(input.nextInt());
+
+            System.out.print("Harga baru : ");
+            h.setHarga(input.nextInt());
+            input.nextLine();
+
+            System.out.println("Diskon baru (%) : ");
+            h.setDiskon(input.nextInt());
+            input.nextLine();
+
+            Hijab hBaru;
+            if(pilih == 1){
+                hBaru = new Pashmina(h.getNama(), h.getWarna(), h.getStok(), h.getHarga(), h.getDiskon());
+            } else if(pilih == 2){
+                hBaru = new SegiEmpat(h.getNama(), h.getWarna(), h.getStok(), h.getHarga(), h.getDiskon());
+            } else if(pilih == 3){
+                hBaru = new Instan(h.getNama(), h.getWarna(), h.getStok(), h.getHarga(), h.getDiskon());
+            } else if(pilih == 4) {
+                hBaru = new Bergo(h.getNama(), h.getWarna(), h.getStok(), h.getHarga(), h.getDiskon());
+            } else if(pilih == 5) {
+                hBaru = new Khimar(h.getNama(), h.getWarna(), h.getStok(), h.getHarga(), h.getDiskon());
+            } else {
+                String kategori = k.getKategori()[pilih - 1];
+                hBaru = new Pashmina(h.getNama(), h.getWarna(), h.getStok(), h.getHarga(), h.getDiskon());
+            }
+            daftarHijab.set(index, hBaru);
+
+            System.out.println("Data hijab berhasil diupdate");
+
+        }else{
+            System.out.println("Data hijab tidak ditemukan");
+        }
+    }
+}
